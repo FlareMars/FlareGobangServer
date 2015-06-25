@@ -1,4 +1,5 @@
 var express = require('express');
+var AV = require('leanengine');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -6,6 +7,7 @@ var todos = require('./routes/todos');
 var cloud = require('./cloud');
 
 var app = express();
+app.use(AV.Cloud.CookieSession({ secret: 'my secret', maxAge: 3600000, fetchUser: true }));
 
 // 设置 view 引擎
 app.set('views', path.join(__dirname, 'views'));
@@ -19,6 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+//进入index主页
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() })
 })
